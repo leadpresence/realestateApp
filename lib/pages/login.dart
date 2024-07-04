@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:realeastapp/pages/regsiter.dart';
 import 'package:realeastapp/utils/app_assets.dart';
 
 class Login extends StatefulWidget {
@@ -37,7 +38,7 @@ class _LoginState extends State<Login> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  "Welcome Home",
+                  " ",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
@@ -83,7 +84,10 @@ class _LoginState extends State<Login> {
                               const SizedBox(height: 5.0),
                               const TextField(
                                 decoration: InputDecoration(
-                                  labelText: 'Email',
+                                 hintText: 'Email',
+                                     hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.normal,fontSize: 14),
+
+                                     labelText: null,
                                   fillColor: Colors.white,
                                   filled: true,
                                   border: OutlineInputBorder(),
@@ -109,7 +113,10 @@ class _LoginState extends State<Login> {
                                 decoration: const InputDecoration(
                                   fillColor: Colors.white,
                                   filled: true,
-                                  labelText: 'Password',
+                                  hintText: 'Passworrd',
+                                     hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.normal,fontSize: 14),
+
+                                     labelText: null,
                                   border: OutlineInputBorder(),
                                 ),
                                 obscureText: true,
@@ -121,6 +128,11 @@ class _LoginState extends State<Login> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       // Handle button press
+                                       Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const Register(),
+                              ),
+                            );
                                     },
                                     style: ElevatedButton.styleFrom(
                                       foregroundColor:

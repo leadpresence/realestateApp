@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:realeastapp/utils/app_assets.dart';
 
@@ -12,8 +11,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    return 
- Scaffold(
+    return Scaffold(
       body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -24,7 +22,7 @@ class _RegisterState extends State<Register> {
           child: Stack(
             children: [
               Positioned(
-                  bottom: 200,
+                  bottom: 155,
                   left: 0,
                   right: 0,
                   child: Center(
@@ -57,7 +55,7 @@ class _RegisterState extends State<Register> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Register',
+                                    'Sign Up',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyLarge
@@ -71,20 +69,53 @@ class _RegisterState extends State<Register> {
                               Row(
                                 children: [
                                   Text(
-                                    'Email',
+                                    'User Name',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
                                         ?.copyWith(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.w400),
+                                            fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 5.0),
                               const TextField(
                                 decoration: InputDecoration(
-                                  labelText: 'Email',
+                                  hintText: 'User Name',
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14),
+                                  labelText: null,
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Email',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 5.0),
+                              const TextField(
+                                decoration: InputDecoration(
+                                  labelText: null,
+                                  hintText: 'Email',
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14),
                                   fillColor: Colors.white,
                                   filled: true,
                                   border: OutlineInputBorder(),
@@ -100,7 +131,7 @@ class _RegisterState extends State<Register> {
                                         .bodyMedium
                                         ?.copyWith(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.w400),
+                                            fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -108,9 +139,45 @@ class _RegisterState extends State<Register> {
                               TextFormField(
                                 obscuringCharacter: '*',
                                 decoration: const InputDecoration(
+                                  hintText: 'Passwword',
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14),
                                   fillColor: Colors.white,
                                   filled: true,
-                                  labelText: 'Password',
+                                  labelText: null,
+                                  border: OutlineInputBorder(),
+                                ),
+                                obscureText: true,
+                              ),
+                              const SizedBox(height: 20.0),
+                              const SizedBox(height: 16.0),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Confirm Password',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 5.0),
+                              TextFormField(
+                                obscuringCharacter: '*',
+                                decoration: const InputDecoration(
+                                  hintText: 'Confirm Passwword',
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14),
+                                  labelText: null,
                                   border: OutlineInputBorder(),
                                 ),
                                 obscureText: true,
@@ -122,6 +189,12 @@ class _RegisterState extends State<Register> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       // Handle button press
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Register(),
+                                        ),
+                                      );
                                     },
                                     style: ElevatedButton.styleFrom(
                                       foregroundColor:
@@ -167,6 +240,5 @@ class _RegisterState extends State<Register> {
             ],
           )),
     );
-  
   }
 }
