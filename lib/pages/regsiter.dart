@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:realeastapp/pages/login.dart';
 import 'package:realeastapp/pages/search.dart';
 import 'package:realeastapp/utils/app_assets.dart';
 
@@ -233,11 +235,84 @@ class _RegisterState extends State<Register> {
                                     ),
                                   )
                                 ],
+                              ),
+                                 const SizedBox(height: 60.0),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: 105,
+                                      height: 55,
+                                      decoration: const BoxDecoration(
+                                          color: Color(0xff484848),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          )),
+                                          child: Center(child:SvgPicture.asset(AppAssets.google) ,
+                                    )),
+                                     Container(
+                                      width: 105,
+                                      height: 55,
+                                      decoration: const BoxDecoration(
+                                          color: Color(0xff484848),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          )),
+
+                                          child: Center(child:SvgPicture.asset(AppAssets.apple) ,
+                                    )),
+                                     Container(
+                                      width: 105,
+                                      height: 55,
+                                      decoration: const BoxDecoration(
+                                          color: Color(0xff484848),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          )),
+                                          child: Center(child:SvgPicture.asset(AppAssets.fb) ,
+                                    ))
+                                  ],
+                                ),
                               )
+                           
                             ],
                           ),
                         ),
-                      )))
+                      ))),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+
+                          Text("Already have an account ?",style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+                          const SizedBox(width: 10,),
+                          GestureDetector(
+                            onTap:(){
+                                  Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Login(),
+                                        ),
+                                      );
+                            },
+
+                            child:  Text("Login",style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold,color: Colors.pink[600])),
+                          )
+                        ],),
+                      )
+       
             ],
           )),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:realeastapp/pages/regsiter.dart';
 import 'package:realeastapp/utils/app_assets.dart';
 
@@ -12,8 +13,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    return 
-    Scaffold(
+    return Scaffold(
       body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -84,10 +84,12 @@ class _LoginState extends State<Login> {
                               const SizedBox(height: 5.0),
                               const TextField(
                                 decoration: InputDecoration(
-                                 hintText: 'Email',
-                                     hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.normal,fontSize: 14),
-
-                                     labelText: null,
+                                  hintText: 'Email',
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14),
+                                  labelText: null,
                                   fillColor: Colors.white,
                                   filled: true,
                                   border: OutlineInputBorder(),
@@ -114,9 +116,11 @@ class _LoginState extends State<Login> {
                                   fillColor: Colors.white,
                                   filled: true,
                                   hintText: 'Passworrd',
-                                     hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.normal,fontSize: 14),
-
-                                     labelText: null,
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14),
+                                  labelText: null,
                                   border: OutlineInputBorder(),
                                 ),
                                 obscureText: true,
@@ -128,11 +132,12 @@ class _LoginState extends State<Login> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       // Handle button press
-                                       Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const Register(),
-                              ),
-                            );
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Register(),
+                                        ),
+                                      );
                                     },
                                     style: ElevatedButton.styleFrom(
                                       foregroundColor:
@@ -152,33 +157,104 @@ class _LoginState extends State<Login> {
                                 children: [
                                   SizedBox(
                                     width:
-                                        MediaQuery.of(context).size.width / 3,
+                                        MediaQuery.of(context).size.width / 4,
                                     child: const Divider(
                                       color: Colors.white,
                                       thickness: .5,
                                     ),
                                   ),
                                   const SizedBox(width: 10.0),
-                                  const Text('or'),
+                                  const Text('Or Login with'),
                                   const SizedBox(width: 10.0),
                                   SizedBox(
                                     width:
-                                        MediaQuery.of(context).size.width / 3,
+                                        MediaQuery.of(context).size.width / 4,
                                     child: const Divider(
                                       thickness: .5,
                                       color: Colors.white,
                                     ),
                                   )
                                 ],
+                              ),
+                              const SizedBox(height: 60.0),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: 105,
+                                      height: 55,
+                                      decoration: const BoxDecoration(
+                                          color: Color(0xff484848),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          )),
+                                          child: Center(child:SvgPicture.asset(AppAssets.google) ,
+                                    )),
+                                     Container(
+                                      width: 105,
+                                      height: 55,
+                                      decoration: const BoxDecoration(
+                                          color: Color(0xff484848),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          )),
+
+                                          child: Center(child:SvgPicture.asset(AppAssets.apple) ,
+                                    )),
+                                     Container(
+                                      width: 105,
+                                      height: 55,
+                                      decoration: const BoxDecoration(
+                                          color: Color(0xff484848),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          )),
+                                          child: Center(child:SvgPicture.asset(AppAssets.fb) ,
+                                    ))
+                                  ],
+                                ),
                               )
                             ],
                           ),
                         ),
-                      )))
+                      ))),
+
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+
+                          Text("Don't have an account ?",style: Theme.of(context).textTheme.bodyMedium?.
+                          copyWith(fontWeight: FontWeight.bold)),
+                          const SizedBox(width: 10,),
+                          GestureDetector(
+                            onTap:(){
+                                  Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Register(),
+                                        ),
+                                      );
+                            },
+
+                            child:  Text("Sign up",style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold,color: Colors.pink[600])),
+                          )
+                        ],),
+                      )
             ],
           )),
     );
-  
-  
   }
 }
