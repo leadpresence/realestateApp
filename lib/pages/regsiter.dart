@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:realeastapp/pages/search.dart';
 import 'package:realeastapp/utils/app_assets.dart';
 
 class Register extends StatefulWidget {
@@ -192,7 +193,7 @@ class _RegisterState extends State<Register> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const Register(),
+                                              const Search(),
                                         ),
                                       );
                                     },
