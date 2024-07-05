@@ -4,6 +4,7 @@ import 'package:realeastapp/pages/home.dart';
 import 'package:realeastapp/pages/login.dart';
 import 'package:realeastapp/pages/regsiter.dart';
 import 'package:realeastapp/pages/search.dart';
+import 'package:realeastapp/pages_2/payment_home.dart';
 
 void main() {
   runApp(const RealEstateMyApp());
@@ -43,12 +44,13 @@ class RealEstateMyApp extends StatelessWidget {
         ),
       ),
       routes: {
-        '/userHome': (context) => UserHome(),
-        '/login': (context) => Login(),
-        '/register': (context) => Register(),
-        '/search': (context) => Search(),
+        '/userHome': (context) => const UserHome(),
+        '/login': (context) => const Login(),
+        '/register': (context) => const Register(),
+        '/search': (context) => const Search(),
+        '/paymentHome' :  (context) => const PaymentHome()
       },
-      home: const UserHome(),
+      home: const PaymentHome(),
     );
   }
 }
