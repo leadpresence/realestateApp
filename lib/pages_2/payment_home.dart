@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 
 class PaymentHome extends StatelessWidget {
   const PaymentHome({super.key});
@@ -117,8 +118,28 @@ class PaymentHome extends StatelessWidget {
          SizedBox(height: 20,),
 
          Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
+POSWidget(
+  assetName: 'assets/icons/wallet.svg',
+statusText: 'ACTIVE',
+  containerColor: Colors.green,
+  productTypeText: 'Wallet',
+  textColor: Colors.white,
+),POSWidget(
+  assetName: 'assets/icons/card.svg',
+statusText: 'INACTIVE',
+  containerColor: Colors.grey,
+  productTypeText: 'WEB POS',
+  textColor: Colors.black,
+),
+POSWidget(
+  assetName: 'assets/icons/pos.svg',
+statusText: 'NOT IN USE',
+  containerColor: Colors.black,
+  productTypeText: 'Terminal POS',
+  textColor: Colors.white,
+),
           ],
          )
 
@@ -191,7 +212,13 @@ class ProductCountWidget extends StatelessWidget {
 
 
 class POSWidget extends StatelessWidget {
-  const POSWidget({super.key});
+  const POSWidget({super.key, this.productTypeText,  this.assetName, this.containerColor, this.statusText, this.textColor,});
+
+  final String? productTypeText;
+  final String? assetName;
+  final Color? containerColor;
+  final String? statusText;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -209,22 +236,43 @@ class POSWidget extends StatelessWidget {
                                 offset: const Offset(0, 5),
                               ),]
       ),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xffFF6634).withOpacity(0.15)
+      child: Padding(
+        padding: const EdgeInsets.symmetric( vertical: 10,),
+        child: Column(
+          children: [
+            Stack(
+              clipBehavior: Clip.none ,
+              children: [
+                Container(
+                  height: 80,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xffFF6634).withOpacity(0.15)
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(assetName ?? ''),
+                  ),
                 ),
-                child: Center(),
-              )
-            ],
-          )
-        ],
+                Positioned(
+                  
+                  top: -1,
+                  right: 22,
+                  child:   Container(
+                  height: 15, width: 35,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: containerColor
+                  ),
+
+                  child: Center(child: Text(statusText?? '', style:  TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 6,),)),
+                ),),
+              ],
+            ),
+            const SizedBox(height: 5,),
+            Text(productTypeText ?? '', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black,),),
+          ],
+        ),
       ),
     );
   }
