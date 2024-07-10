@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:realeastapp/pages_2/web_transaction_view.dart';
 
 class PaymentHome extends StatelessWidget {
   const PaymentHome({super.key});
@@ -53,34 +54,37 @@ class PaymentHome extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Padding(
+                        Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: 10,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ProductCountWidget(
-                              color: Color(0xffFF4400),
-                              count: '03',
-                              productType: 'All Products',
-                            ),
-                            ProductCountWidget(
-                              color: Color(0xff219653),
-                              count: '03',
-                              productType: 'Active Products',
-                            ),
-                            ProductCountWidget(
-                              color: Color(0xff828282),
-                              count: '03',
-                              productType: 'Inactive Products',
-                            ),
-                            ProductCountWidget(
-                              color: Colors.black,
-                              count: '03',
-                              productType: 'Not in use products',
-                            ),
-                          ],
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width-90,
+                          child: Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ProductCountWidget(
+                                color: Color(0xffFF4400),
+                                count: '03',
+                                productType: 'All Products',
+                              ),
+                              ProductCountWidget(
+                                color: Color(0xff219653),
+                                count: '03',
+                                productType: 'Active Products',
+                              ),
+                              ProductCountWidget(
+                                color: Color(0xff828282),
+                                count: '03',
+                                productType: 'Inactive Products',
+                              ),
+                              ProductCountWidget(
+                                color: Colors.black,
+                                count: '03',
+                                productType: 'Not in use products',
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],
@@ -88,66 +92,95 @@ class PaymentHome extends StatelessWidget {
                 ),
               ),
             ),
-          const  SizedBox(height: 20,),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.665,
-            width: double.infinity,
-            decoration:  const BoxDecoration(
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20,),),
-              color: Colors.white,
+            const SizedBox(
+              height: 20,
             ),
-            child:  const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   Text('List of Products', style:  TextStyle(
-                               fontSize: 13,
-                               fontWeight: FontWeight.w800,
-                               color: Colors.black,
-                             ),),
-                              SizedBox(height: 5,),
-         SizedBox(
-          width: 32,
-           child: Divider(
-             thickness: 5,
-             color: Color(0xffFF4400) ,
-            
-           ),
-         ),
-         SizedBox(height: 20,),
-
-         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-POSWidget(
-  assetName: 'assets/icons/wallet.svg',
-statusText: 'ACTIVE',
-  containerColor: Colors.green,
-  productTypeText: 'Wallet',
-  textColor: Colors.white,
-),POSWidget(
-  assetName: 'assets/icons/card.svg',
-statusText: 'INACTIVE',
-  containerColor: Colors.grey,
-  productTypeText: 'WEB POS',
-  textColor: Colors.black,
-),
-POSWidget(
-  assetName: 'assets/icons/pos.svg',
-statusText: 'NOT IN USE',
-  containerColor: Colors.black,
-  productTypeText: 'Terminal POS',
-  textColor: Colors.white,
-),
-          ],
-         )
-
-                ],
+            Container(
+              height: MediaQuery.of(context).size.height * 0.700,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(
+                    20,
+                  ),
+                ),
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'List of Products',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    const SizedBox(
+                      width: 32,
+                      child: Divider(
+                        thickness: 5,
+                        color: Color(0xffFF4400),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        POSWidget(
+                          assetName: 'assets/icons/wallet.svg',
+                          statusText: 'ACTIVE',
+                          containerColor: Colors.green,
+                          productTypeText: 'Wallet',
+                          textColor: Colors.white,
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return const WebPosTransactionView();
+                            }));
+                          },
+                        ),
+                        POSWidget(
+                          assetName: 'assets/icons/card.svg',
+                          statusText: 'INACTIVE',
+                          containerColor: Colors.grey,
+                          productTypeText: 'WEB POS',
+                          textColor: Colors.black,
+                          onTap: () {
+                          Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return const WebPosTransactionView();
+                            }));
+                          },
+                        ),
+                        POSWidget(
+                          assetName: 'assets/icons/pos.svg',
+                          statusText: 'NOT IN USE',
+                          containerColor: Colors.black,
+                          productTypeText: 'Terminal POS',
+                          textColor: Colors.white,
+                          onTap: () {
+                          Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return const WebPosTransactionView();
+                            }));
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        
           ],
         ),
       ),
@@ -173,8 +206,8 @@ class ProductCountWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 55,
-          width: 55,
+          height: 40,
+          width: 40,
           decoration: BoxDecoration(
             border: Border.all(
               color: color ?? Colors.white,
@@ -210,68 +243,96 @@ class ProductCountWidget extends StatelessWidget {
   }
 }
 
-
 class POSWidget extends StatelessWidget {
-  const POSWidget({super.key, this.productTypeText,  this.assetName, this.containerColor, this.statusText, this.textColor,});
+  const POSWidget({
+    super.key,
+    this.productTypeText,
+    this.assetName,
+    this.containerColor,
+    this.statusText,
+    this.textColor,
+    this.onTap,
+  });
 
   final String? productTypeText;
   final String? assetName;
   final Color? containerColor;
   final String? statusText;
   final Color? textColor;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 125,
-      width: 102,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
-        boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.shade200,
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                offset: const Offset(0, 5),
-                              ),]
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric( vertical: 10,),
-        child: Column(
-          children: [
-            Stack(
-              clipBehavior: Clip.none ,
-              children: [
-                Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color(0xffFF6634).withOpacity(0.15)
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 125,
+        width: 102,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade200,
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 5),
+              ),
+            ]),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 10,
+          ),
+          child: Column(
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: const Color(0xffFF6634).withOpacity(0.15)),
+                    child: Center(
+                      child: SvgPicture.asset(assetName ?? ''),
+                    ),
                   ),
-                  child: Center(
-                    child: SvgPicture.asset(assetName ?? ''),
+                  Positioned(
+                    top: -1,
+                    right: 22,
+                    child: Container(
+                      height: 15,
+                      width: 35,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: containerColor),
+                      child: Center(
+                          child: Text(
+                        statusText ?? '',
+                        style: TextStyle(
+                          color: textColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 6,
+                        ),
+                      )),
+                    ),
                   ),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                productTypeText ?? '',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  color: Colors.black,
                 ),
-                Positioned(
-                  
-                  top: -1,
-                  right: 22,
-                  child:   Container(
-                  height: 15, width: 35,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: containerColor
-                  ),
-
-                  child: Center(child: Text(statusText?? '', style:  TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 6,),)),
-                ),),
-              ],
-            ),
-            const SizedBox(height: 5,),
-            Text(productTypeText ?? '', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black,),),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

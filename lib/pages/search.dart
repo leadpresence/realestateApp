@@ -5,10 +5,13 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:realeastapp/pages/props.dart';
+import 'package:realeastapp/pages_2/payment_home.dart';
 import 'package:realeastapp/utils/app_assets.dart';
 import 'package:realeastapp/utils/tripple_rail.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
+import 'package:dio/dio.dart'; 
+final dio = Dio();
 class Search extends StatefulWidget {
   const Search({super.key});
 
@@ -18,6 +21,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   dynamic investMentProperties = [];
+  Response<dynamic>? kResponse;
   bool isloading = false;
   String _allInstallments = '';
   final List<String> _dropdownItems = ['', 'Yes', 'No'];
@@ -48,15 +52,17 @@ class _SearchState extends State<Search> {
       return;
     }
   }
+ 
 
   Future<dynamic> addPrpperties(BuildContext context) async {
     try {
       setState(() {
         isloading = true;
       });
-      final netClient = http.Client();
-      final url =
-          Uri.parse('https://2f86-212-100-86-17.ngrok-free.app/api/Properties');
+      // final netClient = http.Client();
+      // final url =
+      //     Uri.parse('https://3d0c-102-220-173-36.ngrok-free.app/api/Properties');
+  
       final Map<String, dynamic> paylaod = {
         "propertyType": _typeController.text,
         "size": int.parse(_sizeController.text),
@@ -67,30 +73,29 @@ class _SearchState extends State<Search> {
         "offeringPrice": double.parse(_priceController.text),
         "allowInstallments": _allInstallments == 'YES' ? 1 : 0
       };
-      var response = await http.post(url, body: json.encode(paylaod),
-      
-       headers: {
-      "content-type": "application/json",
-    },);
-      if (response.statusCode == 200 || response.statusCode == 201) {
+   
+    final response = await dio.post('https://3d0c-102-220-173-36.ngrok-free.app/api/Properties',data: paylaod);
+
+      if (response.statusCode! < 300) {
         setState(() {
           isloading = false;
         });
         getPrpperties();
         if (kDebugMode) {
           print('Response status: ${response.statusCode}');
-          print('Response body: ${response.body}');
+          print('Response body: ${response.data}');
         }
       } else {
         setState(() {
           isloading = false;
         });
+        print("COUDL NOT  SAVE PROPERTY");
       }
     } catch (e, stk) {
       setState(() {
         isloading = false;
       });
-      print('Response body: ${stk}');
+      print('Response Error: ${e.toString()} ${stk}');
     }
   }
 
@@ -99,9 +104,66 @@ class _SearchState extends State<Search> {
       setState(() {
         isloading = true;
       });
+      // final netClient = http.Client();
+      // final url =
+          // Uri.parse('https://5669-212-100-86-17.ngrok-free.app/Properties',);
+  final response = await dio.get('https://3d0c-102-220-173-36.ngrok-free.app/api/Properties');
+      // final b = response.data;
+      if(response.statusCode! < 300){
+           setState(() {
+
+        kResponse=response;
+         isloading = false;
+      });
+     
+      print(kResponse!.data['data'].length);
+
+    
+   
+    //  for (var element in b['data']) {
+    //   investMentProperties.add[element];
+       
+    //  }
+
+       
+      // final res= ProperttiesResponse.fromJson(b);
+     
+
+      // v
+      //ar response = await netClient.get(url);
+      // if (response.statusCode==200 || response.statusCode==201) {
+        // setState(() {
+        //   isloading = false;
+        //   investMentProperties = jsonDecode(response.body);
+        // });
+
+        // if (kDebugMode) {
+        //   print('Response status: ${response.statusCode}');
+        //   print('Response body: ${response.body}');
+        // }
+      } else {
+        setState(() {
+          isloading = false;
+        });
+        kResponse=null;
+      }
+    } catch (e, stk) {
+      setState(() {
+        isloading = false;
+         kResponse=null;
+      });
+      print('Response body: ${stk}');
+    }
+  }
+
+  Future<dynamic> savepperties() async {
+    try {
+      setState(() {
+        isloading = true;
+      });
       final netClient = http.Client();
       final url =
-          Uri.parse('https://2f86-212-100-86-17.ngrok-free.app/api/Properties');
+          Uri.parse('https://3d0c-102-220-173-36.ngrok-free.app/api/Properties',);
 
       var response = await netClient.get(url);
       if (response.statusCode == 200) {
@@ -132,7 +194,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-    getPrpperties();
+   getPrpperties();
   }
 
   void showMyModal(
@@ -150,10 +212,7 @@ class _SearchState extends State<Search> {
             children: [
               Align(
                 child: isloading
-                    ? const CircularProgressIndicator.adaptive(
-                        backgroundColor: Color(0xff1F4C6B),
-                        strokeWidth: 50,
-                        value: 20,
+                    ? const CircularProgressIndicator(
                       )
                     : const SizedBox.shrink(),
               ),
@@ -283,19 +342,27 @@ class _SearchState extends State<Search> {
                 ),
                 leadingExpanded: true,
                 trailExpanded: true,
-                trailing: Container(
-                  height: 50.0,
-                  width: 61,
-                  decoration: const BoxDecoration(
-                      color: Color(0xffF5F4F8),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      )),
-                  child: Center(
-                    child: SvgPicture.asset(AppAssets.settings),
+                trailing: GestureDetector(
+                  onTap: (){
+                    Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return const PaymentHome();
+                            }));
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: 61,
+                    decoration: const BoxDecoration(
+                        color: Color(0xffF5F4F8),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        )),
+                    child: Center(
+                      child: SvgPicture.asset(AppAssets.settings),
+                    ),
                   ),
                 ),
               ),
@@ -305,7 +372,7 @@ class _SearchState extends State<Search> {
                 decoration: const BoxDecoration(
                     color: Color(0xffF5F4F8),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
-                height: 70,
+                height: 60,
                 child: Row(
                   children: [
                     Expanded(
@@ -339,29 +406,7 @@ class _SearchState extends State<Search> {
                             ),
                             // enabledBorder: InputBorder.none,
                             hintText: 'Search',
-                            // prefixIcon: const Icon(
-                            //   CupertinoIcons.search,
-                            //   color: Colors.black,
-                            // ),
-                            // suffixIcon: false
-                            //     ? IconButton(
-                            //         icon: const Icon(
-                            //           Icons.cancel,
-                            //         ),
-                            //         onPressed: () {
-                            //           // setState(
-                            //           //   () {
-                            //           //     _searchBoxController.clear();
-                            //           //     _showCancelIcon = false;
-                            //           //     setState(() {
-                            //           //       sheetFilteredListOfBanks =
-                            //           //           widget.banks!;
-                            //           //     });
-                            //           //   },
-                            //           // );
-                            //         },
-                            //       )
-                            //     : null,
+                    
                           ),
                         ),
                       ),
@@ -372,7 +417,8 @@ class _SearchState extends State<Search> {
               const SizedBox(
                 height: 10,
               ),
-              (investMentProperties == null || isloading)
+          
+                 (kResponse == null || isloading)
                   ? const SizedBox.shrink()
                   : Row(
                       children: [
@@ -383,7 +429,7 @@ class _SearchState extends State<Search> {
                                 ?.copyWith(
                                     fontWeight: FontWeight.normal,
                                     color: Colors.black)),
-                        Text('${investMentProperties['data'].length ?? 0}',
+                        Text('${kResponse!.data['data'].length??0}',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -481,23 +527,21 @@ class _SearchState extends State<Search> {
                         ),
                       ),
                     )
-                  : (investMentProperties == null || isloading)
+                  : (kResponse == null || isloading)
                       ? const Center(
-                          child: CircularProgressIndicator.adaptive(
-                          backgroundColor: Color(0xff1F4C6B),
-                          strokeWidth: 50,
-                          value: 20,
+                          child: CircularProgressIndicator(
+                         
                         ))
                       : Expanded(
                           child: MasonryGridView.builder(
                               padding: const EdgeInsets.symmetric(horizontal: 0),
                               physics: const BouncingScrollPhysics(),
-                              itemCount: investMentProperties['data'].length,
+                              itemCount: kResponse!.data['data'].length,
                               gridDelegate:
                                   const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2),
                               itemBuilder: (context, index) {
-                                final props = investMentProperties['data'][index];
+                                final props = kResponse!.data!['data'][index];
                                 return Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: Container(
@@ -583,7 +627,7 @@ class _SearchState extends State<Search> {
                                                             SizedBox(
                                                               width: 50,
                                                               child: Text(
-                                                                "${props['price']}",
+                                                                "${props['price'].toString()}",
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
@@ -632,7 +676,7 @@ class _SearchState extends State<Search> {
                                               SizedBox(
                                                 width: 120,
                                                 child: Text(
-                                                  "${props['propertyType']}",
+                                                  "${props['propertyType'].toString()}",
                                                   overflow: TextOverflow.ellipsis,
                                                   maxLines: 1,
                                                   style: Theme.of(context)
@@ -694,316 +738,10 @@ class _SearchState extends State<Search> {
                                   ),
                                 );
                               })),
-              //   ListView.builder(
-              //   itemCount: 1,
-              //   itemBuilder: (context, index) {
-              //     return Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              // Container(
-              //   height: 251,
-              //   width: 175,
-              //   decoration: const BoxDecoration(
-              //       color: Color(0xffF5F4F8),
-              //       borderRadius:
-              //           BorderRadius.all(Radius.circular(25))),
-              //   child: Padding(
-              //     padding: const EdgeInsets.symmetric(
-              //         horizontal: 10, vertical: 10),
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.start,
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Container(
-              //           height: 175,
-              //           width: 160,
-              //           decoration: const BoxDecoration(
-              //               image: DecorationImage(
-              //                 image: AssetImage(AppAssets.bungalow),
-              //                 fit: BoxFit.cover,
-              //               ),
-              //               borderRadius: BorderRadius.all(
-              //                   Radius.circular(25))),
-              //                   child: Stack(children: [
-              //                     Align(
-              //                       alignment: Alignment.topRight,
-              //                       child: Padding(
-              //                         padding: const EdgeInsets.all(8.0),
-              //                         child: SvgPicture.asset(AppAssets.favorite),
-              //                       ),),
-      
-              //                         Align(
-              //                       alignment: Alignment.bottomRight,
-              //                       child: Padding(
-              //                         padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-              //                         child:Container(
-              //   height: 35,
-              //   width: 90,
-              //   decoration: const BoxDecoration(
-              //       color: Color(0xff1F4C6B),
-              //       borderRadius:
-              //           BorderRadius.all(Radius.circular(8))),
-              //           child: Center(
-              //             child: Row(
-              //               mainAxisAlignment: MainAxisAlignment.center,
-              //               children: [
-              //                   Text(
-              //                   "\$",
-              //                   overflow: TextOverflow.ellipsis,
-              //                   maxLines: 1,
-              //                   style: Theme.of(context)
-              //                       .textTheme
-              //                       .bodySmall
-              //                       ?.copyWith(
-              //                           fontSize: 12,
-              //                           color: Colors.white),
-              //                 ),
-              //               Text(
-              //                   "250",
-              //                   overflow: TextOverflow.ellipsis,
-              //                   maxLines: 1,
-              //                   style: Theme.of(context)
-              //                       .textTheme
-              //                       .bodySmall
-              //                       ?.copyWith(
-              //                           fontSize: 12,
-              //                           color: Colors.white),
-              //                 ),
-              //                     Text(
-              //                   "/month",
-              //                   overflow: TextOverflow.ellipsis,
-              //                   maxLines: 1,
-              //                   style: Theme.of(context)
-              //                       .textTheme
-              //                       .bodySmall
-              //                       ?.copyWith(
-              //                           fontSize: 12,
-              //                           color: Colors.white),
-              //                 ),
-              //             ],),
-              //           ),
-              //           ) ,
-              //                       ),),
-      
-              //                   ],),
-              //         ),
-              //         const SizedBox(
-              //           height: 4,
-              //         ),
-              //         Row(
-              //           children: [
-              //             SizedBox(
-              //               width: 150,
-              //               child: Text(
-              //                 "Bungalow House",
-              //                 overflow: TextOverflow.ellipsis,
-              //                 maxLines: 1,
-              //                 style: Theme.of(context)
-              //                     .textTheme
-              //                     .bodyMedium
-              //                     ?.copyWith(
-              //                         fontSize: 12,
-              //                         fontWeight: FontWeight.bold,
-              //                         color: Colors.black),
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //         const SizedBox(
-              //           height: 5,
-              //         ),
-              //         Row(
-              //           children: [
-              //             const Icon(
-              //               Icons.star_rate,
-              //               color: Colors.amber,
-              //               size: 20,
-              //             ),
-              //             const SizedBox(
-              //               width: 3,
-              //             ),
-              //             Text(
-              //               '4.4',
-              //               style: Theme.of(context)
-              //                   .textTheme
-              //                   .bodySmall
-              //                   ?.copyWith(color: Colors.black),
-              //             ),
-              //             const SizedBox(
-              //               width: 5,
-              //             ),
-              //             SvgPicture.asset(AppAssets.location,height: 10,),
-              //               const SizedBox(
-              //               width: 2,
-              //             ),
-              //             Text(
-              //               'lekki Epe',
-              //               style: Theme.of(context)
-              //                   .textTheme
-              //                   .bodySmall
-              //                   ?.copyWith(color: Colors.black),
-              //             )
-              //           ],
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              //          Container(
-              //           height: 251,
-              //           width: 175,
-              //           decoration: const BoxDecoration(
-              //               color: Color(0xffF5F4F8),
-              //               borderRadius:
-              //                   BorderRadius.all(Radius.circular(25))),
-              //           child: Padding(
-              //             padding: const EdgeInsets.symmetric(
-              //                 horizontal: 10, vertical: 10),
-              //             child: Column(
-              //               mainAxisAlignment: MainAxisAlignment.start,
-              //               crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 Container(
-              //                   height: 175,
-              //                   width: 160,
-              //                   decoration: const BoxDecoration(
-              //                       image: DecorationImage(
-              //                         image: AssetImage(AppAssets.bungalow),
-              //                         fit: BoxFit.cover,
-              //                       ),
-              //                       borderRadius: BorderRadius.all(
-              //                           Radius.circular(25))),
-              //                           child: Stack(children: [
-              //                             Align(
-              //                               alignment: Alignment.topRight,
-              //                               child: Padding(
-              //                                 padding: const EdgeInsets.all(8.0),
-              //                                 child: SvgPicture.asset(AppAssets.favorite),
-              //                               ),),
-      
-              //                                 Align(
-              //                               alignment: Alignment.bottomRight,
-              //                               child: Padding(
-              //                                 padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-              //                                 child:Container(
-              //           height: 35,
-              //           width: 90,
-              //           decoration: const BoxDecoration(
-              //               color: Color(0xff1F4C6B),
-              //               borderRadius:
-              //                   BorderRadius.all(Radius.circular(8))),
-              //                   child: Center(
-              //                     child: Row(
-              //                       mainAxisAlignment: MainAxisAlignment.center,
-              //                       children: [
-              //                           Text(
-              //                           "\$",
-              //                           overflow: TextOverflow.ellipsis,
-              //                           maxLines: 1,
-              //                           style: Theme.of(context)
-              //                               .textTheme
-              //                               .bodySmall
-              //                               ?.copyWith(
-              //                                   fontSize: 12,
-              //                                   color: Colors.white),
-              //                         ),
-              //                       Text(
-              //                           "250",
-              //                           overflow: TextOverflow.ellipsis,
-              //                           maxLines: 1,
-              //                           style: Theme.of(context)
-              //                               .textTheme
-              //                               .bodySmall
-              //                               ?.copyWith(
-              //                                   fontSize: 12,
-              //                                   color: Colors.white),
-              //                         ),
-              //                             Text(
-              //                           "/month",
-              //                           overflow: TextOverflow.ellipsis,
-              //                           maxLines: 1,
-              //                           style: Theme.of(context)
-              //                               .textTheme
-              //                               .bodySmall
-              //                               ?.copyWith(
-              //                                   fontSize: 12,
-              //                                   color: Colors.white),
-              //                         ),
-              //                     ],),
-              //                   ),
-              //                   ) ,
-              //                               ),),
-      
-              //                           ],),
-              //                 ),
-              //                 const SizedBox(
-              //                   height: 4,
-              //                 ),
-              //                 Row(
-              //                   children: [
-              //                     SizedBox(
-              //                       width: 150,
-              //                       child: Text(
-              //                         "Bungalow House",
-              //                         overflow: TextOverflow.ellipsis,
-              //                         maxLines: 1,
-              //                         style: Theme.of(context)
-              //                             .textTheme
-              //                             .bodyMedium
-              //                             ?.copyWith(
-              //                                 fontSize: 12,
-              //                                 fontWeight: FontWeight.bold,
-              //                                 color: Colors.black),
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //                 const SizedBox(
-              //                   height: 5,
-              //                 ),
-              //                 Row(
-              //                   children: [
-              //                     const Icon(
-              //                       Icons.star_rate,
-              //                       color: Colors.amber,
-              //                       size: 20,
-              //                     ),
-              //                     const SizedBox(
-              //                       width: 3,
-              //                     ),
-              //                     Text(
-              //                       '4.4',
-              //                       style: Theme.of(context)
-              //                           .textTheme
-              //                           .bodySmall
-              //                           ?.copyWith(color: Colors.black),
-              //                     ),
-              //                     const SizedBox(
-              //                       width: 5,
-              //                     ),
-              //                     SvgPicture.asset(AppAssets.location,height: 10,),
-              //                       const SizedBox(
-              //                       width: 2,
-              //                     ),
-              //                     Text(
-              //                       'lekki Epe',
-              //                       style: Theme.of(context)
-              //                           .textTheme
-              //                           .bodySmall
-              //                           ?.copyWith(color: Colors.black),
-              //                     )
-              //                   ],
-              //                 )
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-      
-              //       ],
-              //     );
-              //   },
-              // ))
-            ],
+             
+             
+                      
+                         ],
           ),
         ),
       ),

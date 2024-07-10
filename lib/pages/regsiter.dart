@@ -243,7 +243,7 @@ class _RegisterState extends State<Register> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                      width: 105,
+                                    width:  MediaQuery.of(context).size.width*0.25,
                                       height: 55,
                                       decoration: const BoxDecoration(
                                           color: Color(0xff484848),
@@ -256,7 +256,7 @@ class _RegisterState extends State<Register> {
                                           child: Center(child:SvgPicture.asset(AppAssets.google) ,
                                     )),
                                      Container(
-                                      width: 105,
+                                      width:  MediaQuery.of(context).size.width*0.25,
                                       height: 55,
                                       decoration: const BoxDecoration(
                                           color: Color(0xff484848),
@@ -270,7 +270,7 @@ class _RegisterState extends State<Register> {
                                           child: Center(child:SvgPicture.asset(AppAssets.apple) ,
                                     )),
                                      Container(
-                                      width: 105,
+                                   width:  MediaQuery.of(context).size.width*0.25,
                                       height: 55,
                                       decoration: const BoxDecoration(
                                           color: Color(0xff484848),

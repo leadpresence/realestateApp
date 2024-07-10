@@ -157,7 +157,7 @@ class _LoginState extends State<Login> {
                                 children: [
                                   SizedBox(
                                     width:
-                                        MediaQuery.of(context).size.width / 4,
+                                        MediaQuery.of(context).size.width / 5,
                                     child: const Divider(
                                       color: Colors.white,
                                       thickness: .5,
@@ -168,7 +168,7 @@ class _LoginState extends State<Login> {
                                   const SizedBox(width: 10.0),
                                   SizedBox(
                                     width:
-                                        MediaQuery.of(context).size.width / 4,
+                                        MediaQuery.of(context).size.width / 5,
                                     child: const Divider(
                                       thickness: .5,
                                       color: Colors.white,
@@ -183,7 +183,7 @@ class _LoginState extends State<Login> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                      width: 105,
+                                      width:  MediaQuery.of(context).size.width*0.25,
                                       height: 55,
                                       decoration: const BoxDecoration(
                                           color: Color(0xff484848),
@@ -196,7 +196,7 @@ class _LoginState extends State<Login> {
                                           child: Center(child:SvgPicture.asset(AppAssets.google) ,
                                     )),
                                      Container(
-                                      width: 105,
+                                   width:  MediaQuery.of(context).size.width*0.25,
                                       height: 55,
                                       decoration: const BoxDecoration(
                                           color: Color(0xff484848),
@@ -210,7 +210,7 @@ class _LoginState extends State<Login> {
                                           child: Center(child:SvgPicture.asset(AppAssets.apple) ,
                                     )),
                                      Container(
-                                      width: 105,
+                                      width:  MediaQuery.of(context).size.width*0.25,
                                       height: 55,
                                       decoration: const BoxDecoration(
                                           color: Color(0xff484848),
